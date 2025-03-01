@@ -1,36 +1,32 @@
-name: Deploy Flask App to AWS EC2
+name: Deploy to EC2
 
 on:
   push:
     branches:
-      - master  # Run this workflow when changes are pushed to master
+      - master  # Change to 'main' if your default branch is 'main'
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest  # Use an Ubuntu runner
-    
+    runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      - name: Setup SSH Key and Configure EC2 Access
-        run: |
-          echo "${{ secrets.PRIVATE_KEY }}" > private_key.pem
-          chmod 600 private_key.pem
-          ssh-keyscan -H ${{ secrets.EC2_IP }} >> ~/.ssh/known_hosts
+    - name: Setup SSH Key and Configure EC2 Access
+      run: |
+        mkdir -p ~/.ssh  # ✅ Ensure SSH directory exists
+        echo "${{ secrets.PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H ${{ secrets.EC2_IP }} >> ~/.ssh/known_hosts  # ✅ Prevents host verification issue
 
-      - name: Copy Files to EC2
-        run: |
-          scp -o StrictHostKeyChecking=no -i private_key.pem -r * ubuntu@${{ secrets.EC2_IP }}:/home/ubuntu/ansible-docker-setup
+    - name: Deploy application to EC2
+      run: |
+        ssh -i ~/.ssh/id_rsa ubuntu@${{ secrets.EC2_IP }} <<EOF
+          cd /home/ubuntu/app
+          git pull origin master  # Pull latest code
+          docker-compose down
+          docker-compose up --build -d
+        EOF
 
-      - name: Deploy Application on EC2
-        run: |
-          ssh -o StrictHostKeyChecking=no -i private_key.pem ubuntu@${{ secrets.EC2_IP }} << 'EOF'
-            cd /home/ubuntu/ansible-docker-setup
-            ansible-playbook -i inventory.ini setup.yml
-            docker stop flask-app || true
-            docker rm flask-app || true
-            docker build -t flask-app .
-            docker run -d -p 5000:5000 --name flask-app flask-app
-          EOF
 
