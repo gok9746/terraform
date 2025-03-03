@@ -4,7 +4,7 @@ FROM python:3.9
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy only the necessary files (requirements.txt and app.py) from the docker-webapp folder
+# Copy application files from the docker-webapp directory to the container's /app/ directory
 COPY docker-webapp/requirements.txt /app/
 COPY docker-webapp/app.py /app/
 
