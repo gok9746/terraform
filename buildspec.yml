@@ -1,34 +1,20 @@
 version: 0.2
 
-env:
-  variables:
-    AWS_REGION: "us-east-1"  # Your AWS region
-    ECR_REPO: "https://us-east-1.console.aws.amazon.com/ecr/repositories/private/724772053707/my-app-repo?region=us-east-1"  # Your ECR repository URI
-
 phases:
-  pre_build:
+  install:
+    runtime-versions:
+      docker: 18
     commands:
-      # Logging into Amazon ECR using the AWS CLI and Docker
-      - echo "Logging into Amazon ECR..."
-      - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REPO
-      # Optional: Check Docker version (for debugging purposes)
-      - docker --version
-      # Optional: Display environment variables for debugging purposes
-      - echo "AWS_REGION: $AWS_REGION"
-      - echo "ECR_REPO: $ECR_REPO"
-
+      # Login to ECR
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 724772053707.dkr.ecr.us-east-1.amazonaws.com/my-app-repo
   build:
     commands:
       # Build the Docker image
-      - echo "Building the Docker image..."
-      - docker build -t my-app .
-      # Tag the Docker image for ECR
-      - docker tag my-app:latest $ECR_REPO:latest
-
+      - docker build -t $ECR_REPO:$CODEBUILD_RESOLVED_SOURCE_VERSION .
+      # Tag the Docker image
+      - docker tag $ECR_REPO:$CODEBUILD_RESOLVED_SOURCE_VERSION $ECR_REPO:latest
   post_build:
     commands:
-      # Push the Docker image to Amazon ECR
-      - echo "Pushing Docker image to ECR..."
+      # Push the Docker image to ECR
+      - docker push $ECR_REPO:$CODEBUILD_RESOLVED_SOURCE_VERSION
       - docker push $ECR_REPO:latest
-      # Optionally, add any post-build steps here (e.g., notifying or logging)
-      - echo "Docker image successfully pushed to $ECR_REPO"
