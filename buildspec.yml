@@ -3,9 +3,14 @@ version: 0.2
 phases:
   pre_build:
     commands:
-      # Login to ECR
+      # Login to Amazon ECR
       - echo Logging in to Amazon ECR...
       - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 724772053707.dkr.ecr.us-east-1.amazonaws.com
+
+      # Log in to Docker Hub to avoid rate limits
+      - echo Logging in to Docker Hub...
+      - docker login --username gokul9746 --password dckr_pat_EXh8Nj4KZ7UpAcJOaPcyq4pjcb4
+
       - REPOSITORY_URI=724772053707.dkr.ecr.us-east-1.amazonaws.com/my-app-repo
       - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
 
@@ -13,7 +18,7 @@ phases:
     commands:
       # Build Docker image
       - echo Building the Docker image...
-      - cd docker-webapp  # Navigate to the docker-webapp directory
+      - cd docker-webapp
       - docker build -t $REPOSITORY_URI:$IMAGE_TAG -f Dockerfile .
       - docker tag $REPOSITORY_URI:$IMAGE_TAG $REPOSITORY_URI:latest
 
@@ -30,4 +35,4 @@ artifacts:
 
 cache:
   paths:
-    - '/root/.cache/pip/**/*'  # Cache Python dependencies
+    - '/root/.cache/pip/**/*'
