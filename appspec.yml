@@ -1,0 +1,21 @@
+version: 0.0
+os: linux
+files:
+  - source: /docker-webapp/*
+    destination: /home/ubuntu/myapp/  # Destination folder where files will be copied
+
+hooks:
+  BeforeInstall:
+    - location: scripts/stop_docker_container.sh  # Stop any running Docker container
+      timeout: 180
+      runas: ubuntu
+
+  AfterInstall:
+    - location: scripts/install_docker_dependencies.sh  # Install Docker (if not installed already)
+      timeout: 180
+      runas: ubuntu
+
+  ApplicationStart:
+    - location: scripts/start_docker_container.sh  # Build and start the Docker container
+      timeout: 180
+      runas: ubuntu
