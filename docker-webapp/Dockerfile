@@ -4,15 +4,17 @@ FROM python:3.9
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy application files from the docker-webapp directory to the container's /app/ directory
-COPY docker-webapp/requirements.txt /app/
-COPY docker-webapp/app.py /app/
+# Copy the requirements file into the container
+COPY requirements.txt /app/
 
-# Install dependencies
-RUN pip install -r requirements.txt
+# Install any dependencies
+RUN pip install --no-cache-dir -r /app/requirements.txt
 
-# Expose port
+# Copy the rest of the application files into the container
+COPY app.py /app/
+
+# Expose the port the app runs on (if applicable)
 EXPOSE 5000
 
-# Run the application
+# Command to run your application
 CMD ["python", "app.py"]
