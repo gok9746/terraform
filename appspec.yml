@@ -1,21 +1,20 @@
 version: 0.0
 os: linux
+
 files:
-  - source: /docker-webapp/*
-    destination: /home/ubuntu/myapp/  # Destination folder where files will be copied
+  # Copy the Dockerfile and application files to the EC2 instance
+  - source: /Dockerfile
+    destination: /home/ubuntu/
+  - source: /scripts/
+    destination: /home/ubuntu/scripts/
 
 hooks:
   BeforeInstall:
-    - location: scripts/stop_docker_container.sh  # Stop any running Docker container
+    - location: /home/ubuntu/scripts/stop_docker_container.sh
       timeout: 180
-      runas: ubuntu
-
   AfterInstall:
-    - location: scripts/install_docker_dependencies.sh  # Install Docker (if not installed already)
+    - location: /home/ubuntu/scripts/install_dependencies.sh
       timeout: 180
-      runas: ubuntu
-
   ApplicationStart:
-    - location: scripts/start_docker_container.sh  # Build and start the Docker container
+    - location: /home/ubuntu/scripts/start_docker_container.sh
       timeout: 180
-      runas: ubuntu
