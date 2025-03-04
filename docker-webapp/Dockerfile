@@ -4,17 +4,15 @@ FROM python:3.9
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy the requirements file into the container
-COPY requirements.txt /app/
+# Copy application files
+COPY . /app
 
-# Install any dependencies
-RUN pip install --no-cache-dir -r /app/requirements.txt
+# Install dependencies
+RUN pip install -r requirements.txt
 
-# Copy the rest of the application files into the container
-COPY app.py /app/
-
-# Expose the port the app runs on (if applicable)
+# Expose port
 EXPOSE 5000
 
-# Command to run your application
+# Run the application
 CMD ["python", "app.py"]
+
