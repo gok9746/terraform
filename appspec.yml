@@ -11,7 +11,7 @@ files:
     destination: /home/ubuntu/docker-webapp/
   - source: docker-webapp/deploy.yml
     destination: /home/ubuntu/docker-webapp/
-  
+
   # Copy the entire scripts directory to /home/ubuntu/scripts/
   - source: scripts/
     destination: /home/ubuntu/scripts/
