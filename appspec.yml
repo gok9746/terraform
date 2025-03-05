@@ -3,9 +3,16 @@ os: linux
 
 files:
   # Copy the Dockerfile and application files to the EC2 instance
-  - source: /Dockerfile
-    destination: /home/ubuntu/
-  - source: /scripts/
+  - source: docker-webapp/Dockerfile
+    destination: /home/ubuntu/docker-webapp/
+  - source: docker-webapp/app.py
+    destination: /home/ubuntu/docker-webapp/
+  - source: docker-webapp/requirements.txt
+    destination: /home/ubuntu/docker-webapp/
+  - source: docker-webapp/deploy.yml
+    destination: /home/ubuntu/docker-webapp/
+  # Copy the entire scripts directory to the /home/ubuntu/scripts/ directory
+  - source: docker-webapp/scripts/
     destination: /home/ubuntu/scripts/
 
 hooks:
