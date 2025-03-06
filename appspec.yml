@@ -18,14 +18,11 @@ files:
     destination: /home/ubuntu/scripts
   - source: clean_up_existing_files.sh
     destination: /home/ubuntu/scripts
-     
 
 hooks:
   BeforeInstall:
-  
-   - location: clean_up_existing_files.sh
+    - location: clean_up_existing_files.sh
       timeout: 180
-
     - location: stop_docker_container.sh
       timeout: 180
   AfterInstall:
