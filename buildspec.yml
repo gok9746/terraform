@@ -18,7 +18,6 @@ phases:
     commands:
       # Build Docker image
       - echo Building the Docker image...
-      - cd docker-webapp
       - docker build -t $REPOSITORY_URI:$IMAGE_TAG -f Dockerfile .
       - docker tag $REPOSITORY_URI:$IMAGE_TAG $REPOSITORY_URI:latest
 
@@ -31,11 +30,11 @@ phases:
 
 artifacts:
   files:
-    - '**/*'                      # Include all files in the repository
-    - 'scripts/install_dependencies.sh'  # Include install_dependencies.sh script
-    - 'scripts/start_docker_container.sh' # Include start_docker_container.sh script
-    - 'scripts/stop_docker_container.sh'  # Include stop_docker_container.sh script
-  discard-paths: yes # This removes folder structure in the final artifact (scripts will be at the root level)
+    - '**/*'                    # Include all files in the repository
+    - 'install_dependencies.sh'  # Include install_dependencies.sh script
+    - 'start_docker_container.sh' # Include start_docker_container.sh script
+    - 'stop_docker_container.sh'  # Include stop_docker_container.sh script
+  discard-paths: yes  # This removes folder structure in the final artifact (scripts will be at the root level)
 
 cache:
   paths:
