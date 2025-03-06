@@ -2,24 +2,28 @@ version: 0.0
 os: linux
 
 files:
-  - source: docker-webapp/Dockerfile
+  - source: Dockerfile
     destination: /home/ubuntu/docker-webapp/
-  - source: docker-webapp/app.py
+  - source: app.py
     destination: /home/ubuntu/docker-webapp/
-  - source: docker-webapp/requirements.txt
+  - source: requirements.txt
     destination: /home/ubuntu/docker-webapp/
-  - source: docker-webapp/deploy.yml
+  - source: deploy.yml
     destination: /home/ubuntu/docker-webapp/
-  - source: scripts/
-    destination: /home/ubuntu/scripts/
+  - source: install_dependencies.sh
+    destination: /home/ubuntu/
+  - source: start_docker_container.sh
+    destination: /home/ubuntu/
+  - source: stop_docker_container.sh
+    destination: /home/ubuntu/
 
 hooks:
   BeforeInstall:
-    - location: scripts/stop_docker_container.sh
+    - location: stop_docker_container.sh
       timeout: 180
   AfterInstall:
-    - location: scripts/install_dependencies.sh
+    - location: install_dependencies.sh
       timeout: 180
   ApplicationStart:
-    - location: scripts/start_docker_container.sh
+    - location: start_docker_container.sh
       timeout: 180
