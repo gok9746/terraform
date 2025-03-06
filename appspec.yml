@@ -12,21 +12,21 @@ files:
   - source: docker-webapp/deploy.yml
     destination: /home/ubuntu/docker-webapp/
 
-  # Copy each script file directly to /home/ubuntu/ (outside of a scripts/ folder)
-  - source: install_dependencies.sh
-    destination: /home/ubuntu/
-  - source: start_docker_container.sh
-    destination: /home/ubuntu/
+  # Copy the scripts directly to their required paths (adjust paths as necessary)
   - source: stop_docker_container.sh
-    destination: /home/ubuntu/
+    destination: /opt/codedeploy-agent/deployment-root/893ffe89-dad6-4aa3-9237-eda325bb4b9d/d-2DQN2NLIB/deployment-archive/stop_docker_container.sh
+  - source: start_docker_container.sh
+    destination: /opt/codedeploy-agent/deployment-root/893ffe89-dad6-4aa3-9237-eda325bb4b9d/d-2DQN2NLIB/deployment-archive/start_docker_container.sh
+  - source: install_dependencies.sh
+    destination: /opt/codedeploy-agent/deployment-root/893ffe89-dad6-4aa3-9237-eda325bb4b9d/d-2DQN2NLIB/deployment-archive/install_dependencies.sh
 
 hooks:
   BeforeInstall:
-    - location: /home/ubuntu/stop_docker_container.sh
+    - location: /opt/codedeploy-agent/deployment-root/893ffe89-dad6-4aa3-9237-eda325bb4b9d/d-2DQN2NLIB/deployment-archive/stop_docker_container.sh
       timeout: 180
   AfterInstall:
-    - location: /home/ubuntu/install_dependencies.sh
+    - location: /opt/codedeploy-agent/deployment-root/893ffe89-dad6-4aa3-9237-eda325bb4b9d/d-2DQN2NLIB/deployment-archive/install_dependencies.sh
       timeout: 180
   ApplicationStart:
-    - location: /home/ubuntu/start_docker_container.sh
+    - location: /opt/codedeploy-agent/deployment-root/893ffe89-dad6-4aa3-9237-eda325bb4b9d/d-2DQN2NLIB/deployment-archive/start_docker_container.sh
       timeout: 180
