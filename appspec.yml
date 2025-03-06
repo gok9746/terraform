@@ -11,11 +11,14 @@ files:
   - source: deploy.yml
     destination: /home/ubuntu/docker-webapp/
   - source: install_dependencies.sh
-    destination: /home/ubuntu/
+    destination: /home/ubuntu/scripts
   - source: start_docker_container.sh
-    destination: /home/ubuntu/
+    destination: /home/ubuntu/scripts
   - source: stop_docker_container.sh
-    destination: /home/ubuntu/
+    destination: /home/ubuntu/scripts
+  - source: clean_up_existing_files.sh
+    destination: /home/ubuntu/scripts
+     
 
 hooks:
   BeforeInstall:
