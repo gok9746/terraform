@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e  # Exit on any error
 
-CONTAINER_NAME="web-app-container"
+CONTAINER_NAME="project_01"
 
 echo "Stopping and removing container: $CONTAINER_NAME"
 
