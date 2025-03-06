@@ -1,12 +1,17 @@
 #!/bin/bash
 
-# Set the path to the conflicting file
-file_path="/home/ubuntu/docker-webapp/Dockerfile"
+# Set container name
+container_name="web-app-container"
 
-# Check if the file exists and remove it
-if [ -f "$file_path" ]; then
-    echo "Removing existing $file_path..."
-    rm -f "$file_path"
+# Print debug info
+echo "Stopping and removing container: $container_name"
+
+# Check if the container is running
+container_id=$(docker ps -q -f name=$container_name)
+if [ -n "$container_id" ]; then
+  echo "Container is running, stopping and removing..."
+  docker stop $container_name
+  docker rm $container_name
 else
-    echo "$file_path does not exist."
+  echo "No running container found with name: $container_name"
 fi
