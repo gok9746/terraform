@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Set container name
-container_name="web-app-container"
+container_name="project_01"
 
 # Start the logging
 echo "Starting the stop_docker_container.sh script..."
