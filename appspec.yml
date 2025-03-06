@@ -12,17 +12,21 @@ files:
   - source: docker-webapp/deploy.yml
     destination: /home/ubuntu/docker-webapp/
 
-  # Copy the entire scripts directory to /home/ubuntu/scripts/
-  - source: scripts/
-    destination: /home/ubuntu/scripts/
+  # Copy each script file directly to /home/ubuntu/ (outside of a scripts/ folder)
+  - source: install_dependencies.sh
+    destination: /home/ubuntu/
+  - source: start_docker_container.sh
+    destination: /home/ubuntu/
+  - source: stop_docker_container.sh
+    destination: /home/ubuntu/
 
 hooks:
   BeforeInstall:
-    - location: /home/ubuntu/scripts/stop_docker_container.sh
+    - location: /home/ubuntu/stop_docker_container.sh
       timeout: 180
   AfterInstall:
-    - location: /home/ubuntu/scripts/install_dependencies.sh
+    - location: /home/ubuntu/install_dependencies.sh
       timeout: 180
   ApplicationStart:
-    - location: /home/ubuntu/scripts/start_docker_container.sh
+    - location: /home/ubuntu/start_docker_container.sh
       timeout: 180
