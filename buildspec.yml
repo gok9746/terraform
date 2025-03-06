@@ -24,13 +24,15 @@ phases:
 
   post_build:
     commands:
-      # Push Docker image to ECR
+      # Push Docker image to Amazon ECR
       - echo Pushing the Docker image to Amazon ECR...
       - docker push $REPOSITORY_URI:$IMAGE_TAG
       - docker push $REPOSITORY_URI:latest
 
 artifacts:
-  files: '**/*'
+  files:
+    - '**/*'                    # Include all files
+    - 'scripts/**/*'             # Specifically include the scripts/ directory
   discard-paths: yes
 
 cache:
