@@ -2,7 +2,6 @@ version: 0.0
 os: linux
 
 files:
-  # Copy the Dockerfile and application files to the EC2 instance
   - source: docker-webapp/Dockerfile
     destination: /home/ubuntu/docker-webapp/
   - source: docker-webapp/app.py
@@ -11,22 +10,16 @@ files:
     destination: /home/ubuntu/docker-webapp/
   - source: docker-webapp/deploy.yml
     destination: /home/ubuntu/docker-webapp/
-
-  # Copy the scripts directly to their required paths (adjust paths as necessary)
-  - source: stop_docker_container.sh
-    destination: /opt/codedeploy-agent/deployment-root/893ffe89-dad6-4aa3-9237-eda325bb4b9d/d-2DQN2NLIB/deployment-archive/stop_docker_container.sh
-  - source: start_docker_container.sh
-    destination: /opt/codedeploy-agent/deployment-root/893ffe89-dad6-4aa3-9237-eda325bb4b9d/d-2DQN2NLIB/deployment-archive/start_docker_container.sh
-  - source: install_dependencies.sh
-    destination: /opt/codedeploy-agent/deployment-root/893ffe89-dad6-4aa3-9237-eda325bb4b9d/d-2DQN2NLIB/deployment-archive/install_dependencies.sh
+  - source: scripts/
+    destination: /home/ubuntu/scripts/
 
 hooks:
   BeforeInstall:
-    - location: /opt/codedeploy-agent/deployment-root/893ffe89-dad6-4aa3-9237-eda325bb4b9d/d-2DQN2NLIB/deployment-archive/stop_docker_container.sh
+    - location: scripts/stop_docker_container.sh
       timeout: 180
   AfterInstall:
-    - location: /opt/codedeploy-agent/deployment-root/893ffe89-dad6-4aa3-9237-eda325bb4b9d/d-2DQN2NLIB/deployment-archive/install_dependencies.sh
+    - location: scripts/install_dependencies.sh
       timeout: 180
   ApplicationStart:
-    - location: /opt/codedeploy-agent/deployment-root/893ffe89-dad6-4aa3-9237-eda325bb4b9d/d-2DQN2NLIB/deployment-archive/start_docker_container.sh
+    - location: scripts/start_docker_container.sh
       timeout: 180
