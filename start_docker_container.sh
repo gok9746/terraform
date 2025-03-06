@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e  # Exit on error
 
-CONTAINER_NAME="project_01"
+CONTAINER_NAME="web-app-container"
 
 echo "Checking for existing container: $CONTAINER_NAME"
 if sudo docker ps -a --format '{{.Names}}' | grep -q "^${CONTAINER_NAME}$"; then
