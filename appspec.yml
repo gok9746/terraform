@@ -19,6 +19,10 @@ files:
 
 hooks:
   BeforeInstall:
+  
+   - location: clean_up_existing_files.sh
+      timeout: 180
+
     - location: stop_docker_container.sh
       timeout: 180
   AfterInstall:
