@@ -16,4 +16,4 @@ echo "Building Docker image..."
 sudo docker build -t web-app-container .
 
 echo "Starting container..."
-sudo docker run -d -p 5000:5000 --name web-app-container web-app-container
+sudo docker run -d -p 5000:5000 --name web-app-container web-app-container python app.py --host=0.0.0.0 --port=5000
