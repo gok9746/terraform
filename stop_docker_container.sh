@@ -3,23 +3,27 @@
 # Set container name
 container_name="web-app-container"
 
-# Start the logging
-echo "Starting the stop_docker_container.sh script..."
+# Start logging
+echo "Starting stop_docker_container.sh script..."
 
-# Check if the container is running and stop it
-echo "Checking if container $container_name is running..."
+# Check if the container is running
 container_id=$(docker ps -q -f name=$container_name)
 
 if [ -n "$container_id" ]; then
     echo "Stopping container $container_name..."
     docker stop $container_name
-    
-    # Optionally remove the container if it's not running anymore
+
+    # Wait for the container to stop completely
+    sleep 3
+
     echo "Removing container $container_name..."
-    docker rm $container_name
+    docker rm -f $container_name
 else
-    echo "No container named $container_name is running."
+    echo "No running container named $container_name found."
 fi
 
-# End of the script
+# Clean up unused resources (optional)
+echo "Removing unused Docker resources..."
+docker system prune -af
+
 echo "stop_docker_container.sh script completed."
